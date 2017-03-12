@@ -31,8 +31,9 @@ public class OrderEntry implements Serializable{
 	@Column(name = "orderentryid", nullable = false)
     private Long id;
 		
-	@OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER, orphanRemoval = true)
-	@PrimaryKeyJoinColumn 
+	 
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id")
 	private Product product;
 	
 	@Column(name = "unitprice")
@@ -44,8 +45,9 @@ public class OrderEntry implements Serializable{
 	@Column(name = "qty")
 	private Integer qty;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="id")
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "order_id")
     private Order order;
 	
 	

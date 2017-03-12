@@ -9,13 +9,12 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -33,14 +32,15 @@ public class Order implements Serializable{
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 	
-	@OneToMany(mappedBy="order",targetEntity=OrderEntry.class,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private Set<OrderEntry> orderEntries;
 	
 	@Column(name = "totalprice")
 	private Float totalPrice;
 	
-	@OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER, orphanRemoval = true)
-	@PrimaryKeyJoinColumn
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customer_id")
 	private User customer;
 	
 	@Column(name="status")

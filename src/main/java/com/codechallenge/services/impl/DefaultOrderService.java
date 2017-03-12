@@ -136,7 +136,6 @@ public class DefaultOrderService implements OrderService {
 	}
 	
 	@Override
-	@Cacheable(value="ordercache", key="#order.id")
 	@Transactional
 	public Order createOrder(Order order) {
 		order.setStatus(OrderStatus.NEW);
