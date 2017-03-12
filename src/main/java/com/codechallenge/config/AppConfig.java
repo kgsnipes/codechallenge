@@ -23,11 +23,13 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.codechallenge.services.CalculationService;
 import com.codechallenge.services.DataLoadService;
 import com.codechallenge.services.OrderService;
+import com.codechallenge.services.PricingService;
 import com.codechallenge.services.ProductService;
 import com.codechallenge.services.StockService;
 import com.codechallenge.services.impl.DefaultCalculationService;
 import com.codechallenge.services.impl.DefaultDataLoadService;
 import com.codechallenge.services.impl.DefaultOrderService;
+import com.codechallenge.services.impl.DefaultPricingService;
 import com.codechallenge.services.impl.DefaultProductService;
 import com.codechallenge.services.impl.DefaultStockService;
 /* this class holds all the beans declarations required for the application - this is synonymous to the spring XML config */
@@ -36,6 +38,12 @@ import com.codechallenge.services.impl.DefaultStockService;
 @ComponentScan({ "com.codechallenge.*" })
 @EnableJpaRepositories(basePackages={"com.codechallenge"})	
 public class AppConfig {
+	
+	/*defining pricing service*/
+	@Bean PricingService pricingService()
+	{
+		return new DefaultPricingService();
+	}
 	
 	/* defining the calculation service*/
 	@Bean

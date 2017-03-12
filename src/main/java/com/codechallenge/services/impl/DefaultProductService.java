@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.codechallenge.exception.InvalidProductException;
 import com.codechallenge.models.Product;
 import com.codechallenge.repository.ProductRepository;
 import com.codechallenge.services.ProductService;
@@ -48,6 +49,12 @@ public class DefaultProductService implements ProductService {
 	@Transactional
 	public Product createProduct(Product product) {
 		return productRepository.save(product);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Product getProductRealTimeById(Long id) throws InvalidProductException {
+		return productRepository.findOne(id);
 	}
 
 }

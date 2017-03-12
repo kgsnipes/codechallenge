@@ -2,6 +2,7 @@ package com.codechallenge.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 import org.junit.After;
 import org.junit.Before;
@@ -64,6 +65,15 @@ public class ProductServiceTest {
 		productService.removeProducts(productService.getAllProducts());
 		assertEquals(productService.getAllProducts().size()
 				,0);
+	}
+	
+	@Test
+	public void createProductTest() {
+		Product product=new Product("Product001",50.0f, 0);
+		product=productService.createProduct(product);
+		
+		assertEquals(product!=null && product.getId()!=null,true);
+		assertEquals(product.getName(),"Product001");
 	}
 
 }

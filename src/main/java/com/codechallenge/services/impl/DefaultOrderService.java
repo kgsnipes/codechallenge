@@ -1,6 +1,7 @@
 package com.codechallenge.services.impl;
 
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +42,11 @@ public class DefaultOrderService implements OrderService {
 	
 	@Override
 	public PlaceOrderResponse placeOrder(PlaceOrderRequest request) {
-		lock.lock();
+		
 		PlaceOrderResponse response=new PlaceOrderResponse();
 		try
 		{
+			lock.tryLock(100, TimeUnit.MILLISECONDS);
 			Order order=request.getOrder();
 			checkProductAvailabilityAndReduceInventory(request,response);
 			calculationService.calculateOrder(order);

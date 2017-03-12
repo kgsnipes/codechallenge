@@ -16,5 +16,7 @@ public interface ProductService {
 	public void removeProducts(List<Product> products);
 	
 	public Product createProduct(Product product);
+	
+	public Product getProductRealTimeById(Long id)throws InvalidProductException;
 
 }
