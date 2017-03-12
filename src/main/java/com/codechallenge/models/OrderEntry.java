@@ -1,5 +1,7 @@
 package com.codechallenge.models;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
@@ -17,8 +19,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name="orderentry")
 @DiscriminatorValue("4")
-public class OrderEntry {
+public class OrderEntry implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6695912403787040615L;
+
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "orderentryid", nullable = false)

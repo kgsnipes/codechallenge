@@ -7,17 +7,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codechallenge.models.Product;
 import com.codechallenge.repository.ProductRepository;
+import com.codechallenge.services.ProductService;
 
 @RestController
 public class TestController {
 	
 	@Autowired
-	private ProductRepository productRepository;
+	private ProductService productService;
 	
 	
 	 @RequestMapping(path="/test1",method = RequestMethod.GET, produces="application/json")
 	    public Product test1() {
-		 return productRepository.findByName("Orange");
+		 return productService.getProductByName("Apple");
 	    }
 
 }

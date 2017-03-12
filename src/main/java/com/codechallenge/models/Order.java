@@ -1,5 +1,6 @@
 package com.codechallenge.models;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -18,7 +19,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name="orders")
 @DiscriminatorValue("3")
-public class Order {
+public class Order implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7729760149513253282L;
 
 	@Id
 	@Column(name = "orderid", nullable = false)

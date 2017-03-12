@@ -1,5 +1,7 @@
 package com.codechallenge.models;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -11,8 +13,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name="product")
 @DiscriminatorValue("2")
-public class Product {
+public class Product implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6073468905856062059L;
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "productid", nullable = false)

@@ -21,8 +21,12 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.codechallenge.services.DataLoadService;
+import com.codechallenge.services.ProductService;
+import com.codechallenge.services.StockService;
 import com.codechallenge.services.impl.DefaultDataLoadService;
-
+import com.codechallenge.services.impl.DefaultProductService;
+import com.codechallenge.services.impl.DefaultStockService;
+/* this class holds all the beans declarations required for the application - this is synonymous to the spring XML config */
 @Configuration
 @EnableCaching
 @ComponentScan({ "com.codechallenge.*" })
@@ -30,10 +34,22 @@ import com.codechallenge.services.impl.DefaultDataLoadService;
 public class AppConfig {
 	
 	@Bean
+	public StockService stockService()
+	{
+		return new DefaultStockService();
+	}
+	@Bean
+	public ProductService productService()
+	{
+		return new DefaultProductService();
+	}
+	
+	/* defining the cache manager for data caching */
+	@Bean
 	public CacheManager cacheManager() {
 		return new EhCacheCacheManager(ehCacheCacheManager().getObject());
 	}
-
+   /* defining the EHCACHE manager bean required for the spring cache manager*/
 	@Bean
 	public EhCacheManagerFactoryBean ehCacheCacheManager() {
 		EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
@@ -42,12 +58,13 @@ public class AppConfig {
 		return cmfb;
 	}
 	
+	/* defining the data load service which will load the inital product data to the system */
 	@Bean 
 	public DataLoadService dataLoadService()
 	{
 		return new DefaultDataLoadService();
 	}
-	
+	/* defining the data source for the application - this application will use the HSQLDB which would be in-memory */
 	@Bean
 	public DataSource dataSource() {
 	    DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -57,17 +74,17 @@ public class AppConfig {
 	    dataSource.setPassword("");
 	    return dataSource;
 	}
-	
+	/* defining the entity manager bean for JPA*/
 	@Bean
 	public EntityManager entityManager() {
 	    return entityManagerFactory().getObject().createEntityManager();
 	}
-	
+	/* defining the JPA dialect bean for JPA*/
 	@Bean
 	public HibernateJpaDialect jpaDialect() {
 	    return new HibernateJpaDialect();
 	}
-
+	/* defining the entity manager factory bean for JPA*/
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 	    LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -82,6 +99,7 @@ public class AppConfig {
 	    return em;
 	}
 	
+	/* defining the transaction manager for JPA*/
 	 @Bean
 	    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
 	        return new JpaTransactionManager(entityManagerFactory);
