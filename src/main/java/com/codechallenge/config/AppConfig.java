@@ -20,10 +20,14 @@ import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.codechallenge.services.CalculationService;
 import com.codechallenge.services.DataLoadService;
+import com.codechallenge.services.OrderService;
 import com.codechallenge.services.ProductService;
 import com.codechallenge.services.StockService;
+import com.codechallenge.services.impl.DefaultCalculationService;
 import com.codechallenge.services.impl.DefaultDataLoadService;
+import com.codechallenge.services.impl.DefaultOrderService;
 import com.codechallenge.services.impl.DefaultProductService;
 import com.codechallenge.services.impl.DefaultStockService;
 /* this class holds all the beans declarations required for the application - this is synonymous to the spring XML config */
@@ -33,11 +37,27 @@ import com.codechallenge.services.impl.DefaultStockService;
 @EnableJpaRepositories(basePackages={"com.codechallenge"})	
 public class AppConfig {
 	
+	/* defining the calculation service*/
+	@Bean
+	public CalculationService calculationService()
+	{
+		return new DefaultCalculationService();
+	}
+	
+	/* defining the order service*/
+	@Bean
+	public OrderService orderService()
+	{
+		return new DefaultOrderService();
+	}
+	
+	/* defining the stock service*/
 	@Bean
 	public StockService stockService()
 	{
 		return new DefaultStockService();
 	}
+	/*defining the product service*/
 	@Bean
 	public ProductService productService()
 	{

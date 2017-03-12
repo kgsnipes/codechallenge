@@ -8,12 +8,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.codechallenge.CodechallengeApplication;
+import com.codechallenge.exception.OutOfStockException;
+import com.codechallenge.models.Product;
 import com.codechallenge.repository.ProductRepository;
 import com.codechallenge.services.StockService;
 
 public class DefaultStockService implements StockService {
 
+	/* defining a re-entrant lock for fair chance of providing lock to any deserving thread. Avoiding the thread starvation due to long running threads. This is better than synchronized keyword */
 	private static ReentrantLock lock=new ReentrantLock(true);
 	
 	@Autowired
@@ -22,15 +24,22 @@ public class DefaultStockService implements StockService {
 	private static final Logger LOG = LoggerFactory.getLogger(DefaultStockService.class);
 	
 	@Override
+	public Integer getCurrentStockForProduct(Long id) throws InterruptedException,OutOfStockException {
+		Product product=productRepository.findById(id);
+		if(product.getAvailableQuantity()<=0)
+			throw new OutOfStockException("Product with ID:"+product.getId()+" and Name: "+product.getName()+" is out of stock.");
+		 return product.getAvailableQuantity();
+	}
+
+	@Override
 	@Transactional
-	public Integer getCurrentStockForProduct(String productName) {
+	public void reduceStockForProduct(Long id, Integer qty) {
 		
-		Integer qty=0;
 		try
 		{
 			lock.tryLock(100, TimeUnit.MILLISECONDS);
-			qty= productRepository.findByName(productName).getAvailableQuantity();
-			
+			Product product=productRepository.findById(id);
+			product.setAvailableQuantity(product.getAvailableQuantity()-qty);	
 		}
 		catch(Exception ex)
 		{
@@ -40,7 +49,7 @@ public class DefaultStockService implements StockService {
 		{
 			lock.unlock();
 		}
-		return qty;
+		
 	}
 
 }

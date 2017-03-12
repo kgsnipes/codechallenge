@@ -8,6 +8,8 @@ import com.codechallenge.models.Product;
 
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
-	@Transactional(readOnly=true)
+	
     Product findByName(String name);
+	
+	Product findById(Long id);
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.codechallenge.exception.InvalidProductException;
 import com.codechallenge.models.Product;
 import com.codechallenge.services.DataLoadService;
 import com.codechallenge.services.ProductService;
@@ -38,14 +39,14 @@ public class ProductServiceTest {
 	}
 
 	@Test
-	public void getProductByNameTest1() {
+	public void getProductByNameTest1() throws InvalidProductException {
 		String productName="Apple";
 		Product product=productService.getProductByName(productName);
 		assertNotNull(product);
 	}
 	
 	@Test
-	public void getProductByNameTest2() {
+	public void getProductByNameTest2() throws InvalidProductException {
 		String productName="Orange";
 		Product product=productService.getProductByName(productName);
 		assertEquals(product.getName(),productName);

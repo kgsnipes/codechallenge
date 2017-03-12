@@ -1,5 +1,19 @@
 package com.codechallenge.dto;
 
-public class PlaceOrderRequest {
+import com.codechallenge.models.Order;
+
+public class PlaceOrderRequest extends ServiceRequest{
+	
+	private  Order order;
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}	
+	
+	
 
 }

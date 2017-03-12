@@ -7,6 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -40,6 +42,10 @@ public class Order implements Serializable{
 	@OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER, orphanRemoval = true)
 	@PrimaryKeyJoinColumn
 	private User customer;
+	
+	@Column(name="status")
+    @Enumerated(value = EnumType.STRING)
+	private OrderStatus status;
 	
 	
 
@@ -86,6 +92,16 @@ public class Order implements Serializable{
 	public void setCustomer(User customer) {
 		this.customer = customer;
 	}
+
+	public OrderStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(OrderStatus status) {
+		this.status = status;
+	}
+	
+	
 	
 	
 }
