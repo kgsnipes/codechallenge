@@ -4,8 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.hibernate.cfg.ImprovedNamingStrategy;
-import org.hibernate.cfg.NamingStrategy;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
@@ -24,18 +23,18 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.codechallenge.services.CalculationService;
 import com.codechallenge.services.DataLoadService;
-import com.codechallenge.services.OrderEntryService;
 import com.codechallenge.services.OrderService;
 import com.codechallenge.services.PricingService;
 import com.codechallenge.services.ProductService;
 import com.codechallenge.services.StockService;
+import com.codechallenge.services.UserService;
 import com.codechallenge.services.impl.DefaultCalculationService;
 import com.codechallenge.services.impl.DefaultDataLoadService;
-import com.codechallenge.services.impl.DefaultOrderEntryService;
 import com.codechallenge.services.impl.DefaultOrderService;
 import com.codechallenge.services.impl.DefaultPricingService;
 import com.codechallenge.services.impl.DefaultProductService;
 import com.codechallenge.services.impl.DefaultStockService;
+import com.codechallenge.services.impl.DefaultUserService;
 /* this class holds all the beans declarations required for the application - this is synonymous to the spring XML config */
 @Configuration
 @EnableCaching
@@ -43,53 +42,56 @@ import com.codechallenge.services.impl.DefaultStockService;
 @EnableJpaRepositories(basePackages={"com.codechallenge"})	
 public class AppConfig {
 	
-	/*defining pricing service*/
+	
+	//defining user service bean
 	@Bean 
-	public OrderEntryService orderEntryService()
+	public UserService userService()
 	{
-		return new DefaultOrderEntryService();
+		return new DefaultUserService();
 	}
 	
-	/*defining pricing service*/
+	//defining pricing service
 	@Bean 
 	public PricingService pricingService()
 	{
 		return new DefaultPricingService();
 	}
 	
-	/* defining the calculation service*/
+	// defining the calculation service
 	@Bean
 	public CalculationService calculationService()
 	{
 		return new DefaultCalculationService();
 	}
 	
-	/* defining the order service*/
+	// defining the order service
 	@Bean
 	public OrderService orderService()
 	{
 		return new DefaultOrderService();
 	}
 	
-	/* defining the stock service*/
+	// defining the stock service
 	@Bean
 	public StockService stockService()
 	{
 		return new DefaultStockService();
 	}
-	/*defining the product service*/
+	
+	//defining the product service
 	@Bean
 	public ProductService productService()
 	{
 		return new DefaultProductService();
 	}
 	
-	/* defining the cache manager for data caching */
+	//defining the cache manager for data caching
 	@Bean
 	public CacheManager cacheManager() {
 		return new EhCacheCacheManager(ehCacheCacheManager().getObject());
 	}
-   /* defining the EHCACHE manager bean required for the spring cache manager*/
+   
+	// defining the EHCACHE manager bean required for the spring cache manager
 	@Bean
 	public EhCacheManagerFactoryBean ehCacheCacheManager() {
 		EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
@@ -98,42 +100,38 @@ public class AppConfig {
 		return cmfb;
 	}
 	
-	/* defining the data load service which will load the inital product data to the system */
+	// defining the data load service which will load the inital product data to the system 
 	@Bean 
 	public DataLoadService dataLoadService()
 	{
 		return new DefaultDataLoadService();
 	}
-	/* defining the data source for the application - this application will use the HSQLDB which would be in-memory */
-	/*@Bean
-	public DataSource dataSource() {
-	    DriverManagerDataSource dataSource = new DriverManagerDataSource();
-	    dataSource.setDriverClassName("org.hsqldb.jdbc.JDBCDriver");
-	    dataSource.setUrl("jdbc:hsqldb:file:testdb");
-	    dataSource.setUsername("sa");
-	    dataSource.setPassword("");
-	    return dataSource;
-	}*/
 	
+	
+	//defining the dataSource bean for mysql
 	@Bean
 	public DataSource dataSource() {
-	    DriverManagerDataSource dataSource = new DriverManagerDataSource();
-	    dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 	    dataSource.setUrl("jdbc:mysql://localhost:3306/codechallenge?useSSL=false");
 	    dataSource.setUsername("root");
 	    dataSource.setPassword("root");
-	    return dataSource;
+		return dataSource;
 	}
+	
+	
 	/* defining the entity manager bean for JPA*/
 	@Bean
 	public EntityManager entityManager() {
 	    return entityManagerFactory().getObject().createEntityManager();
 	}
+	
 	/* defining the JPA dialect bean for JPA*/
 	@Bean
 	public HibernateJpaDialect jpaDialect() {
 	    return new HibernateJpaDialect();
 	}
+	
 	/* defining the entity manager factory bean for JPA*/
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -143,9 +141,9 @@ public class AppConfig {
 	    HibernateJpaVendorAdapter jpaVendorAdapter=new HibernateJpaVendorAdapter();
 	    jpaVendorAdapter.setShowSql(false);
 	    jpaVendorAdapter.setGenerateDdl(true);
-	    jpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQLDialect");
+    	jpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQLDialect");
 	    em.setJpaVendorAdapter(jpaVendorAdapter);
-	   em.setPersistenceProviderClass(org.hibernate.jpa.HibernatePersistenceProvider.class);
+	    em.setPersistenceProviderClass(org.hibernate.jpa.HibernatePersistenceProvider.class);
 	    return em;
 	}
 	

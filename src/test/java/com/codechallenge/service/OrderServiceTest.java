@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -22,12 +22,12 @@ import com.codechallenge.models.Order;
 import com.codechallenge.models.OrderEntry;
 import com.codechallenge.models.OrderStatus;
 import com.codechallenge.models.Product;
+import com.codechallenge.models.User;
 import com.codechallenge.services.DataLoadService;
-import com.codechallenge.services.OrderEntryService;
 import com.codechallenge.services.OrderService;
 import com.codechallenge.services.ProductService;
+import com.codechallenge.services.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -41,16 +41,16 @@ public class OrderServiceTest {
 	
 	@Autowired
 	OrderService orderService;
-
 	
 	@Autowired
-	OrderEntryService orderEntryService;
+	UserService userService;
+
 	
 	private static final Logger LOG = LoggerFactory.getLogger(OrderServiceTest.class);
 	
 	private static boolean dataLoaded=false;
 	
-	@Before
+	//@Before
 	public void setup() throws Exception
 	{
 		if(!dataLoaded)
@@ -67,6 +67,7 @@ public class OrderServiceTest {
 		productService.removeProducts(productService.getAllProducts());
 	}
 	
+	@Ignore
 	@Test
 	public void createOrderTest()
 	{
@@ -76,29 +77,84 @@ public class OrderServiceTest {
 	}
 	
 	
+
 	@Test
 	public void placeOrderTest() throws InvalidProductException, JsonProcessingException
 	{
 		Order order=orderService.createOrder(new Order());
+		User user=userService.getUserByEmailAddress("user1@test.com");
+		
+		if(user==null)
+		{
+			userService.saveUser(new User("user1","user1@test.com"));
+		}
+		
+		Product product=productService.getProductByName("Apple");
+		
 		List<OrderEntry> entries=new ArrayList<>();
 		
 		LOG.info("Order Created with ID : "+order.getId());
 		OrderEntry entry=new OrderEntry();
-		Product product=productService.getProductByName("Apple");
+		
 		entry.setProductId(product.getId());
 		entry.setQty(10);
 		entry.setUnitPrice(product.getPrice());
 		entry.setOwner(order);
 		entries.add(entry);
+		
 		order.setOrderEntries(entries);
+		order.setCustomer(user);
 		orderService.saveOrder(order);
+		
 		PlaceOrderRequest request=new PlaceOrderRequest();
 		request.setOrder(order);
+		
 		PlaceOrderResponse response=orderService.placeOrder(request);
-		LOG.info("total price :"+response.getOrder().getOrderEntries().get(0).getProductId());
+		
 		assertEquals(response!=null,true);
 		
 	}
 	
+	
+	@Test
+	public void placeOrderTestForOutOfStock() throws InvalidProductException, JsonProcessingException
+	{
+		Order order=orderService.createOrder(new Order());
+		User user=userService.getUserByEmailAddress("user2@test.com");
+		
+		if(user==null)
+		{
+			userService.saveUser(new User("user2","user2@test.com"));
+		}
+		Product product=productService.getProductByName("Apple");
+		
+		List<OrderEntry> entries=new ArrayList<>();
+		
+		LOG.info("Order Created with ID : "+order.getId());
+		OrderEntry entry=new OrderEntry();
+		
+		entry.setProductId(product.getId());
+		entry.setQty(1000);
+		entry.setUnitPrice(product.getPrice());
+		entry.setOwner(order);
+		entries.add(entry);
+		
+		order.setOrderEntries(entries);
+		order.setCustomer(user);
+		orderService.saveOrder(order);
+		
+		PlaceOrderRequest request=new PlaceOrderRequest();
+		request.setOrder(order);
+		
+		PlaceOrderResponse response=orderService.placeOrder(request);
+		
+		assertEquals(response!=null,true);
+		assertEquals(response.getErrors().isEmpty(),false);
+		for(String s:response.getErrors())
+		{
+			LOG.info("The error is :"+s);
+		}
+		
+	}
 
 }

@@ -1,6 +1,7 @@
 System requirements:
 	- JDK/JRE 1.8 and above
 	- Maven 3.x and above
+	- MySql 5.7 an above
 
 Instructions for execution:
 
