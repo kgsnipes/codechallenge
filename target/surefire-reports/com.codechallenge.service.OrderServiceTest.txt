@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.codechallenge.service.OrderServiceTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 0.872 sec - in com.codechallenge.service.OrderServiceTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 2.036 sec - in com.codechallenge.service.OrderServiceTest

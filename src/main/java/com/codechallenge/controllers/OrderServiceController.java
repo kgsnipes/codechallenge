@@ -46,9 +46,9 @@ public class OrderServiceController {
 	    }
 	 
 	 //this handler fetches the orders by status
-	 @RequestMapping(path="/orders/status/{status}",method = RequestMethod.GET, produces="application/json")
-	    public List<Order> saveOrder(@PathVariable OrderStatus status) {
-	        return (List<Order>) orderService.getOrderByOrderStatus(status);
+	 @RequestMapping(path="/orders/status/{status}/page/{pageNumber}",method = RequestMethod.GET, produces="application/json")
+	    public List<Order> saveOrder(@PathVariable OrderStatus status,@PathVariable Integer pageNumber ) {
+	        return (List<Order>) orderService.getOrderByOrderStatus(status,pageNumber-1);
 	    }
 
 

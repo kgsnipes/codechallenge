@@ -17,6 +17,6 @@ public interface OrderService {
 	
 	public Order saveOrder(Order order);
 	
-	public Collection<Order> getOrderByOrderStatus(OrderStatus orderStatus);
+	public Collection<Order> getOrderByOrderStatus(OrderStatus orderStatus,Integer page);
 
 }

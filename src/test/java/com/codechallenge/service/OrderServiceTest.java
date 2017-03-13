@@ -169,7 +169,7 @@ public class OrderServiceTest {
 	@Test
 	public void orderListingTestForUnsuccessfullOrders()
 	{
-		List<Order> orders=(List<Order>) orderService.getOrderByOrderStatus(OrderStatus.UNSUCCESSFUL);
+		List<Order> orders=(List<Order>) orderService.getOrderByOrderStatus(OrderStatus.UNSUCCESSFUL,1);
 		if(!CollectionUtils.isEmpty(orders))
 		{
 			assertEquals(orders.get(0).getStatus().equals(OrderStatus.UNSUCCESSFUL),true);
@@ -180,7 +180,7 @@ public class OrderServiceTest {
 	@Test
 	public void orderListingTestForNewOrders()
 	{
-		List<Order> orders=(List<Order>) orderService.getOrderByOrderStatus(OrderStatus.NEW);
+		List<Order> orders=(List<Order>) orderService.getOrderByOrderStatus(OrderStatus.NEW,1);
 		if(!CollectionUtils.isEmpty(orders))
 		{
 			assertEquals(orders.get(0).getStatus().equals(OrderStatus.NEW),true);
@@ -191,7 +191,7 @@ public class OrderServiceTest {
 	@Test
 	public void orderListingTestForPlacedOrders()
 	{
-		List<Order> orders=(List<Order>) orderService.getOrderByOrderStatus(OrderStatus.PLACED);
+		List<Order> orders=(List<Order>) orderService.getOrderByOrderStatus(OrderStatus.PLACED,1);
 		if(!CollectionUtils.isEmpty(orders))
 		{
 			assertEquals(orders.get(0).getStatus().equals(OrderStatus.PLACED),true);

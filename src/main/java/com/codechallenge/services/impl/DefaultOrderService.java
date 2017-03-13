@@ -5,7 +5,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
@@ -41,7 +44,7 @@ public class DefaultOrderService implements OrderService {
 	
 	
 	@Override
-	public PlaceOrderResponse placeOrder(PlaceOrderRequest request) {
+	public PlaceOrderResponse placeOrder(final PlaceOrderRequest request) {
 		
 		PlaceOrderResponse response=new PlaceOrderResponse();
 		try
@@ -70,7 +73,7 @@ public class DefaultOrderService implements OrderService {
 		return response;
 	}
 	
-	private void checkProductAvailabilityAndReduceInventory(PlaceOrderRequest request,PlaceOrderResponse response) throws Exception
+	private void checkProductAvailabilityAndReduceInventory(final PlaceOrderRequest request,final PlaceOrderResponse response) throws Exception
 	{
 		Order order=request.getOrder();
 		if(order!=null && order.getId()!=null)
@@ -145,10 +148,15 @@ public class DefaultOrderService implements OrderService {
 	}
 
 	@Override
-	@Cacheable(value="ordercache", key="#orderStatus")
-	public Collection<Order> getOrderByOrderStatus(OrderStatus orderStatus) {
+	@Caching(
+		      put = {
+		            @CachePut(value = "ordercache", key = "#orderStatus.toString()+'_'+#page.toString()")
+		      }
+			)
+	//@Cacheable(value="ordercache", key="#orderStatus.toString().append(#page.toString())")
+	public Collection<Order> getOrderByOrderStatus(OrderStatus orderStatus,Integer page) {
 		// TODO Auto-generated method stub
-		return orderRepository.findByStatus(orderStatus);
+		return orderRepository.findByStatus(orderStatus,new PageRequest(page, 100));
 	}
 
 }

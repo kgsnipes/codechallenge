@@ -17,7 +17,7 @@ public class DefaultCalculationService implements CalculationService {
 	
 	
 	@Override
-	public Order calculateOrder(Order order) throws InvalidProductException, InterruptedException {
+	public Order calculateOrder(final Order order) throws InvalidProductException, InterruptedException {
 		BigDecimal totalPrice=new BigDecimal(0.0);
 		for(OrderEntry entry:order.getOrderEntries())
 		{

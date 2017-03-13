@@ -1,18 +1,19 @@
 package com.codechallenge.repository;
 
-import java.util.Collection;
+import java.util.List;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import com.codechallenge.models.Order;
 import com.codechallenge.models.OrderStatus;
 
 @Repository
-public interface OrderRepository extends CrudRepository<Order, Long> {
+public interface OrderRepository extends PagingAndSortingRepository<Order, Long> {
 	
 	public Order findOne(Long id);
 	
-	public Collection<Order> findByStatus(OrderStatus status);
+	public List<Order> findByStatus(OrderStatus status,Pageable pageable);
    
 }
