@@ -12,16 +12,16 @@ Instructions for Build:
 Instructions for execution:
 
 	Just execute the following on the command prompt.
-	
 	> java -jar target/codechallenge-0.0.1-SNAPSHOT.jar
 
-
+Link to swagger UI - REST API explorer for the application:
+	http://localhost:8080/swagger-ui.html
 
 JUnit test execution:
 	>mvn test
 
 	
-Info:
+Notes:
 - This code challenge is based on Spring Boot Version 1.5.2
 - All the config for the app is provided in com.codechallenge.config.AppConfig.java
 - For the scope of the code challenge the security on the rest web services have not been added.
