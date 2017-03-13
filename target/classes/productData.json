@@ -1,0 +1,43 @@
+{"products":[
+
+{
+
+"name": "Orange",
+
+"price": 10.00,
+
+"availableQuantity": "100"
+
+},
+
+{
+
+"name": "Apple",
+
+"price": 10.00,
+
+"availableQuantity": "100"
+
+},
+
+{
+
+"name": "Kiwi",
+
+"price": 10.00,
+
+"availableQuantity": "100"
+
+},
+
+{
+
+"name": "Bananas",
+
+"price": 10.00,
+
+"availableQuantity": "0"
+
+}
+
+]}
