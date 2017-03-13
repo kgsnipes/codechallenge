@@ -79,7 +79,7 @@ public class DefaultOrderService implements OrderService {
 				{
 					try
 					{
-						Product product=productService.getProductById(entry.getProduct().getId());
+						Product product=productService.getProductById(entry.getProductId());
 						Integer currentStock=stockService.getCurrentStockForProduct(product.getId());
 						if(entry.getQty()<=0)
 						{

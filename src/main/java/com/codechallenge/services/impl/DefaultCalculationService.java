@@ -21,10 +21,11 @@ public class DefaultCalculationService implements CalculationService {
 		BigDecimal totalPrice=new BigDecimal(0.0);
 		for(OrderEntry entry:order.getOrderEntries())
 		{
-			float unitPrice=pricingService.getPriceForProduct(entry.getProduct().getId());
+			float unitPrice=pricingService.getPriceForProduct(entry.getProductId());
 			entry.setUnitPrice(unitPrice);
 			BigDecimal orderEntryTotalPrice=new BigDecimal(unitPrice*entry.getQty());
-			totalPrice.add(orderEntryTotalPrice);
+			entry.setTotalPrice(orderEntryTotalPrice.floatValue());
+			totalPrice=totalPrice.add(orderEntryTotalPrice);
 		}
 		order.setTotalPrice(totalPrice.floatValue());
 		return order;

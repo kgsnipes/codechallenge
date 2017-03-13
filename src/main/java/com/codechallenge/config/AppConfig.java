@@ -4,6 +4,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import org.hibernate.cfg.ImprovedNamingStrategy;
+import org.hibernate.cfg.NamingStrategy;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
@@ -22,12 +24,14 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.codechallenge.services.CalculationService;
 import com.codechallenge.services.DataLoadService;
+import com.codechallenge.services.OrderEntryService;
 import com.codechallenge.services.OrderService;
 import com.codechallenge.services.PricingService;
 import com.codechallenge.services.ProductService;
 import com.codechallenge.services.StockService;
 import com.codechallenge.services.impl.DefaultCalculationService;
 import com.codechallenge.services.impl.DefaultDataLoadService;
+import com.codechallenge.services.impl.DefaultOrderEntryService;
 import com.codechallenge.services.impl.DefaultOrderService;
 import com.codechallenge.services.impl.DefaultPricingService;
 import com.codechallenge.services.impl.DefaultProductService;
@@ -40,7 +44,15 @@ import com.codechallenge.services.impl.DefaultStockService;
 public class AppConfig {
 	
 	/*defining pricing service*/
-	@Bean PricingService pricingService()
+	@Bean 
+	public OrderEntryService orderEntryService()
+	{
+		return new DefaultOrderEntryService();
+	}
+	
+	/*defining pricing service*/
+	@Bean 
+	public PricingService pricingService()
 	{
 		return new DefaultPricingService();
 	}
@@ -93,13 +105,23 @@ public class AppConfig {
 		return new DefaultDataLoadService();
 	}
 	/* defining the data source for the application - this application will use the HSQLDB which would be in-memory */
-	@Bean
+	/*@Bean
 	public DataSource dataSource() {
 	    DriverManagerDataSource dataSource = new DriverManagerDataSource();
 	    dataSource.setDriverClassName("org.hsqldb.jdbc.JDBCDriver");
-	    dataSource.setUrl("jdbc:hsqldb:mem:testdb");
+	    dataSource.setUrl("jdbc:hsqldb:file:testdb");
 	    dataSource.setUsername("sa");
 	    dataSource.setPassword("");
+	    return dataSource;
+	}*/
+	
+	@Bean
+	public DataSource dataSource() {
+	    DriverManagerDataSource dataSource = new DriverManagerDataSource();
+	    dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+	    dataSource.setUrl("jdbc:mysql://localhost:3306/codechallenge?useSSL=false");
+	    dataSource.setUsername("root");
+	    dataSource.setPassword("root");
 	    return dataSource;
 	}
 	/* defining the entity manager bean for JPA*/
@@ -121,7 +143,7 @@ public class AppConfig {
 	    HibernateJpaVendorAdapter jpaVendorAdapter=new HibernateJpaVendorAdapter();
 	    jpaVendorAdapter.setShowSql(false);
 	    jpaVendorAdapter.setGenerateDdl(true);
-	    jpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.HSQLDialect");
+	    jpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQLDialect");
 	    em.setJpaVendorAdapter(jpaVendorAdapter);
 	   em.setPersistenceProviderClass(org.hibernate.jpa.HibernatePersistenceProvider.class);
 	    return em;

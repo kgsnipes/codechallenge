@@ -1,11 +1,11 @@
 package com.codechallenge.models;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -19,7 +19,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="orders")
-@DiscriminatorValue("3")
 public class Order implements Serializable{
 
 	/**
@@ -28,19 +27,18 @@ public class Order implements Serializable{
 	private static final long serialVersionUID = -7729760149513253282L;
 
 	@Id
-	@Column(name = "orderid", nullable = false)
+	@Column(name = "order_id")
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 	
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-	private Set<OrderEntry> orderEntries;
+	@OneToMany(mappedBy="owner",cascade=CascadeType.ALL)
+	private List<OrderEntry> orderEntries=new ArrayList<>();
 	
-	@Column(name = "totalprice")
+	@Column(name = "total_price")
 	private Float totalPrice;
 	
-	
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_id")
+	@OneToOne
+    @JoinColumn(name = "user_id")
 	private User customer;
 	
 	@Column(name="status")
@@ -54,7 +52,7 @@ public class Order implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public Order(Set<OrderEntry> orderEntries, Float totalPrice, User customer) {
+	public Order(List<OrderEntry> orderEntries, Float totalPrice, User customer) {
 		super();
 		this.orderEntries = orderEntries;
 		this.totalPrice = totalPrice;
@@ -67,14 +65,6 @@ public class Order implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Set<OrderEntry> getOrderEntries() {
-		return orderEntries;
-	}
-
-	public void setOrderEntries(Set<OrderEntry> orderEntries) {
-		this.orderEntries = orderEntries;
 	}
 
 	public Float getTotalPrice() {
@@ -99,6 +89,48 @@ public class Order implements Serializable{
 
 	public void setStatus(OrderStatus status) {
 		this.status = status;
+	}
+
+	public List<OrderEntry> getOrderEntries() {
+		return orderEntries;
+	}
+
+	public void setOrderEntries(List<OrderEntry> orderEntries) {
+		this.orderEntries = orderEntries;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((customer == null) ? 0 : customer.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Order other = (Order) obj;
+		if (customer == null) {
+			if (other.customer != null)
+				return false;
+		} else if (!customer.equals(other.customer))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (status != other.status)
+			return false;
+		return true;
 	}
 	
 	
