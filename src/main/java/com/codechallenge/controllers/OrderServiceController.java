@@ -1,5 +1,7 @@
 package com.codechallenge.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codechallenge.dto.PlaceOrderRequest;
 import com.codechallenge.dto.PlaceOrderResponse;
 import com.codechallenge.models.Order;
+import com.codechallenge.models.OrderStatus;
 import com.codechallenge.services.OrderService;
 
 @RestController
@@ -41,5 +44,12 @@ public class OrderServiceController {
 	    public Order saveOrder(@RequestBody Order order) {
 	        return orderService.saveOrder(order);
 	    }
+	 
+	 //this handler fetches the orders by status
+	 @RequestMapping(path="/orders/status/{status}",method = RequestMethod.GET, produces="application/json")
+	    public List<Order> saveOrder(@PathVariable OrderStatus status) {
+	        return (List<Order>) orderService.getOrderByOrderStatus(status);
+	    }
+
 
 }

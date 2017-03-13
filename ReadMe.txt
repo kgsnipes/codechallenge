@@ -8,6 +8,10 @@ Instructions for Build:
 	>mnv clean
 	>mvn compile
 	>mvn package
+	
+	or 
+	
+	>mvnw clean package
 
 Instructions for execution:
 
@@ -29,7 +33,7 @@ Notes:
 - For brevity, have avoided all the default enterprise design of timestamp tracking of the data models.
 - JUnit test cases are available.
 - For Brevity, avoided localization of data.
-
+- For Brevity, paging is not implemented for the Order listing.
 
 
 

@@ -115,7 +115,7 @@ public class OrderServiceTest {
 		
 	}
 	
-	
+	@Ignore
 	@Test
 	public void placeOrderTestForOutOfStock() throws InvalidProductException, JsonProcessingException
 	{
@@ -155,6 +155,13 @@ public class OrderServiceTest {
 			LOG.info("The error is :"+s);
 		}
 		
+	}
+	
+	@Test
+	public void orderListingTest()
+	{
+		List<Order> order=(List<Order>) orderService.getOrderByOrderStatus(OrderStatus.UNSUCCESSFUL);
+		//order
 	}
 
 }
