@@ -48,14 +48,14 @@ public class OrderServiceTest {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(OrderServiceTest.class);
 	
-	private static boolean dataLoaded=false;
 	
-	//@Before
+	
+	@Before
 	public void setup() throws Exception
 	{
-		if(!dataLoaded)
+		if(productService.getProductByName("Apple")==null)
 		{
-			dataLoaded=!dataLoaded;
+			
 			dataLoadService.loadDataIntoSystem();
 		}
 		

@@ -27,9 +27,12 @@ public class DefaultDataLoadService implements DataLoadService {
 	
 	private void loadProductData() throws Exception
 	{
-		ObjectMapper objectMapper=new ObjectMapper();
-		ProductDataUpload productData=objectMapper.readValue(CodechallengeApplication.class.getResourceAsStream("/productData.json"),ProductDataUpload.class);
-		productRespository.save(productData.getProducts());
+		if(productRespository.findByName("Apple")==null){
+			
+			ObjectMapper objectMapper=new ObjectMapper();
+			ProductDataUpload productData=objectMapper.readValue(CodechallengeApplication.class.getResourceAsStream("/productData.json"),ProductDataUpload.class);
+			productRespository.save(productData.getProducts());
+		}
 	}
 
 }

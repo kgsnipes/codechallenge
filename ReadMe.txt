@@ -2,6 +2,12 @@ System requirements:
 	- JDK/JRE 1.8 and above
 	- Maven 3.x and above
 	- MySql 5.7 an above
+	
+	
+Instructions for Build:
+	>mnv clean
+	>mvn compile
+	>mvn package
 
 Instructions for execution:
 
@@ -23,6 +29,7 @@ Info:
 - For brevity, have avoided all the default enterprise design of timestamp tracking of the data models.
 - JUnit test cases are available.
 - For Brevity, avoided localization of data.
+
 
 
 
