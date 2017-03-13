@@ -1,6 +1,7 @@
 package com.codechallenge.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.CollectionUtils;
 
 import com.codechallenge.dto.PlaceOrderRequest;
 import com.codechallenge.dto.PlaceOrderResponse;
@@ -112,10 +114,12 @@ public class OrderServiceTest {
 		PlaceOrderResponse response=orderService.placeOrder(request);
 		
 		assertEquals(response!=null,true);
+		assertEquals(response.getOrder()!=null,true);
+		assertEquals(response.getOrder().getStatus().equals(OrderStatus.PLACED),true);
 		
 	}
 	
-	@Ignore
+	
 	@Test
 	public void placeOrderTestForOutOfStock() throws InvalidProductException, JsonProcessingException
 	{
@@ -150,18 +154,49 @@ public class OrderServiceTest {
 		
 		assertEquals(response!=null,true);
 		assertEquals(response.getErrors().isEmpty(),false);
-		for(String s:response.getErrors())
+		if(CollectionUtils.isEmpty(response.getErrors()))
 		{
-			LOG.info("The error is :"+s);
+			for(String s:response.getErrors())
+			{
+				LOG.info("The error is :"+s);
+				assertEquals(s.contains("OUT_OF_STOCK")||s.contains("Error"),true);
+			}
+		}
+		
+		
+	}
+	
+	@Test
+	public void orderListingTestForUnsuccessfullOrders()
+	{
+		List<Order> orders=(List<Order>) orderService.getOrderByOrderStatus(OrderStatus.UNSUCCESSFUL);
+		if(!CollectionUtils.isEmpty(orders))
+		{
+			assertEquals(orders.get(0).getStatus().equals(OrderStatus.UNSUCCESSFUL),true);
 		}
 		
 	}
 	
 	@Test
-	public void orderListingTest()
+	public void orderListingTestForNewOrders()
 	{
-		List<Order> order=(List<Order>) orderService.getOrderByOrderStatus(OrderStatus.UNSUCCESSFUL);
-		//order
+		List<Order> orders=(List<Order>) orderService.getOrderByOrderStatus(OrderStatus.NEW);
+		if(!CollectionUtils.isEmpty(orders))
+		{
+			assertEquals(orders.get(0).getStatus().equals(OrderStatus.NEW),true);
+		}
+		
+	}
+	
+	@Test
+	public void orderListingTestForPlacedOrders()
+	{
+		List<Order> orders=(List<Order>) orderService.getOrderByOrderStatus(OrderStatus.PLACED);
+		if(!CollectionUtils.isEmpty(orders))
+		{
+			assertEquals(orders.get(0).getStatus().equals(OrderStatus.PLACED),true);
+		}
+		
 	}
 
 }

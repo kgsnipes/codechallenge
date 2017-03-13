@@ -46,14 +46,16 @@ public class DefaultOrderService implements OrderService {
 		PlaceOrderResponse response=new PlaceOrderResponse();
 		try
 		{
-			lock.tryLock(100, TimeUnit.MILLISECONDS);
-			Order order=request.getOrder();
-			checkProductAvailabilityAndReduceInventory(request,response);
-			calculationService.calculateOrder(order);
-			order.setStatus(OrderStatus.PLACED);
-			order=saveOrder(order);
-			response.setOrder(order);
-			response.setStatus(OrderStatus.PLACED.toString());
+			if (lock.tryLock() || lock.tryLock(500, TimeUnit.MILLISECONDS) )
+			{
+				Order order=request.getOrder();
+				checkProductAvailabilityAndReduceInventory(request,response);
+				calculationService.calculateOrder(order);
+				order.setStatus(OrderStatus.PLACED);
+				order=saveOrder(order);
+				response.setOrder(order);
+				response.setStatus(OrderStatus.PLACED.toString());
+			}
 		}
 		catch(Exception ex)
 		{
@@ -87,7 +89,7 @@ public class DefaultOrderService implements OrderService {
 						}
 						if(entry.getQty()>currentStock)
 						{
-							throw new OutOfStockException("The order entry for product requires quantity than available. Product: "+product.getName()+ " available: "+currentStock+ " required : "+entry.getQty());
+							throw new OutOfStockException("OUT_OF_STOCK: The order entry for product requires quantity than available. Product: "+product.getName()+ " available: "+currentStock+ " required : "+entry.getQty());
 						}
 						else
 						{

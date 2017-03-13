@@ -26,14 +26,14 @@ JUnit test execution:
 
 	
 Notes:
-- This code challenge is based on Spring Boot Version 1.5.2
+- This application is based on Spring Boot Version 1.5.2
 - All the config for the app is provided in com.codechallenge.config.AppConfig.java
-- For the scope of the code challenge the security on the rest web services have not been added.
-- For brevity, have avoided the DTO layer. Have used DAO layer.
+- For brevity, the security on the rest web services have not been added.
+- For brevity, have avoided the DTO layer. Have used DAO bean even at the controller.
 - For brevity, have avoided all the default enterprise design of timestamp tracking of the data models.
 - JUnit test cases are available.
-- For Brevity, avoided localization of data.
-- For Brevity, paging is not implemented for the Order listing.
+- For bevity, avoided localization of data in the models.
+- For brevity, paging is not implemented for the Order listing.
 
 
 

@@ -1,9 +1,9 @@
 package com.codechallenge.services.impl;
 
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.codechallenge.exception.InvalidProductException;
 import com.codechallenge.services.PricingService;
@@ -18,18 +18,10 @@ public class DefaultPricingService implements PricingService {
 	private static ReentrantLock lock=new ReentrantLock(true);
 	
 	@Override
+	@Transactional(readOnly=true)
 	public Float getPriceForProduct(Long id) throws InvalidProductException, InterruptedException {
 		Float price=-1.0f;
-		try
-		{
-			lock.tryLock(100, TimeUnit.MILLISECONDS);
-			price=productService.getProductById(id).getPrice();
-		}
-		finally
-		{
-			lock.unlock();
-		}
-		
+		price=productService.getProductRealTimeById(id).getPrice();
 		return price;
 	}
 

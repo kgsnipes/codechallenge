@@ -25,11 +25,10 @@ public class DefaultStockService implements StockService {
 	private static final Logger LOG = LoggerFactory.getLogger(DefaultStockService.class);
 	
 	@Override
-	public Integer getCurrentStockForProduct(Long id) throws InterruptedException,OutOfStockException, InvalidProductException {
+	@Transactional(readOnly=true)
+	public Integer getCurrentStockForProduct(Long id) throws InterruptedException, InvalidProductException {
 		Product product=productService.getProductRealTimeById(id);
-		if(product.getAvailableQuantity()<=0)
-			throw new OutOfStockException("Product with ID:"+product.getId()+" and Name: "+product.getName()+" is out of stock.");
-		 return product.getAvailableQuantity();
+	    return product.getAvailableQuantity();
 	}
 
 	@Override
@@ -38,9 +37,11 @@ public class DefaultStockService implements StockService {
 		
 		try
 		{
-			lock.tryLock(100, TimeUnit.MILLISECONDS);
-			Product product=productService.getProductRealTimeById(id);
-			product.setAvailableQuantity(product.getAvailableQuantity()-qty);	
+			if (lock.tryLock() || lock.tryLock(500, TimeUnit.MILLISECONDS) )
+			{
+				Product product=productService.getProductRealTimeById(id);
+				product.setAvailableQuantity(product.getAvailableQuantity()-qty);	
+			}
 		}
 		catch(Exception ex)
 		{
