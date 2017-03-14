@@ -5,13 +5,18 @@ System requirements:
 	
 	
 Instructions for Build:
-	>mnv clean
-	>mvn compile
-	>mvn package
+	
+	To build with JUnit tests: 
+	 >mvn clean package
+
+	To skip running JUnit test while building 
+	>mvn clean package -Dmaven.test.skip=true
 	
 	or 
 	
 	>mvnw clean package
+	
+	
 
 Instructions for execution:
 
@@ -33,7 +38,6 @@ Notes:
 - For brevity, have avoided all the default enterprise design of timestamp tracking of the data models.
 - JUnit test cases are available.
 - For bevity, avoided localization of data in the models.
-- For brevity, paging is not implemented for the Order listing.
 
 
 
