@@ -41,6 +41,7 @@ public class DefaultStockService implements StockService {
 			{
 				Product product=productService.getProductRealTimeById(id);
 				product.setAvailableQuantity(product.getAvailableQuantity()-qty);	
+				productService.createProduct(product);
 			}
 		}
 		catch(Exception ex)
