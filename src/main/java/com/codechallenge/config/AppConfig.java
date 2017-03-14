@@ -12,6 +12,7 @@ import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -40,6 +41,7 @@ import com.codechallenge.services.impl.DefaultUserService;
 @EnableCaching
 @ComponentScan({ "com.codechallenge.*" })
 @EnableJpaRepositories(basePackages={"com.codechallenge"})	
+@PropertySource("classpath:application.properties")
 public class AppConfig {
 	
 	@Value("${app.jdbc.url}")
