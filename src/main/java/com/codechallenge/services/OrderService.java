@@ -6,7 +6,7 @@ import com.codechallenge.dto.PlaceOrderRequest;
 import com.codechallenge.dto.PlaceOrderResponse;
 import com.codechallenge.models.Order;
 import com.codechallenge.models.OrderStatus;
-
+/* this interface defines the methods for the order relation operations required for this application */
 public interface OrderService {
 	
 	public PlaceOrderResponse placeOrder(PlaceOrderRequest request);

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.codechallenge.models.Product;
-
+/* this interface uses the Spring JPA CRUD repository to add the crud functionality and also allows to add custom methods to fetch data */
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
 	

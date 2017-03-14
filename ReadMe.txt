@@ -17,7 +17,6 @@ Instructions for Build:
 	>mvnw clean package
 	
 	
-
 Instructions for execution:
 
 	Just execute the following on the command prompt.
@@ -31,13 +30,14 @@ JUnit test execution:
 
 	
 Notes:
-- This application is based on Spring Boot Version 1.5.2
+- This REST Service application is based on Spring Boot Version 1.5.2
 - All the config for the app is provided in com.codechallenge.config.AppConfig.java
 - For brevity, the security on the rest web services have not been added.
 - For brevity, have avoided the DTO layer. Have used DAO bean even at the controller.
 - For brevity, have avoided all the default enterprise design of timestamp tracking of the data models.
-- JUnit test cases are available.
-- For bevity, avoided localization of data in the models.
+- JUnit test cases are available for order and product service. A stress test of 200 threads for place order is also added.
+- For brevity, avoided localization of data in the models.
+- For brevity, some literals have been mentioned inline.
 
 
 

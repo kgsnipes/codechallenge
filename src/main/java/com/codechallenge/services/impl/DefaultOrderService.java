@@ -48,7 +48,7 @@ public class DefaultOrderService implements OrderService {
 		
 		PlaceOrderResponse response=new PlaceOrderResponse();
 		try
-		{
+		{/* first try for the lock on the monitor object and see if it returns immediately and if this fails then try for a timed lock to retain the fairness of a thread acquiring a lock*/
 			if (lock.tryLock() || lock.tryLock(500, TimeUnit.MILLISECONDS) )
 			{
 				Order order=request.getOrder();
