@@ -42,6 +42,12 @@ import com.codechallenge.services.impl.DefaultUserService;
 @EnableJpaRepositories(basePackages={"com.codechallenge"})	
 public class AppConfig {
 	
+	@Value("${app.jdbc.url}")
+	private String jdbcURL;
+	@Value("${app.jdbc.user}")
+	private String jdbcUserName;
+	@Value("${app.jdbc.pass}")
+	private String jdbcPassword;
 	
 	//defining user service bean
 	@Bean 
@@ -113,9 +119,9 @@ public class AppConfig {
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-	    dataSource.setUrl("jdbc:mysql://localhost:3306/codechallenge?useSSL=false");
-	    dataSource.setUsername("root");
-	    dataSource.setPassword("root");
+	    dataSource.setUrl(jdbcURL);
+	    dataSource.setUsername(jdbcUserName);
+	    dataSource.setPassword(jdbcPassword);
 		return dataSource;
 	}
 	

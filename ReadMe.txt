@@ -3,6 +3,10 @@ System requirements:
 	- Maven 3.x and above
 	- MySql 5.7 an above
 	
+MySql Config to be available before execution:
+	- database config is available in the path src/main/resources/application.properties
+	- change this as required.
+	
 	
 Instructions for Build:
 	
