@@ -3,13 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.codechallenge</groupId>
-	<artifactId>codechallenge</artifactId>
+	<groupId>com.microservices</groupId>
+	<artifactId>microservices</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>codechallenge</name>
-	<description>code challenge </description>
+	<name>microservices</name>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -92,4 +91,5 @@
 	</build>
 
 
+	<description>microservices  using spring boot</description>
 </project>
